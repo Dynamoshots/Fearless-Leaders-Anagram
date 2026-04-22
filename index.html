@@ -689,21 +689,22 @@ function showWin() {
   // Lock in localStorage immediately
   localStorage.setItem(LS_KEY, playerEmail);
 
-  // Save to sheet
+  // Save to sheet via GET (Apps Script handles GET reliably without CORS issues)
   const saveEl = document.getElementById("winSaveMsg");
-  fetch(SHEET_URL, {
-    method:  "POST",
-    mode:    "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name:    playerName,
-      email:   playerEmail,
-      score:   solvedCount,
-      total:   ANAGRAMS.length,
-      time_seconds: elapsed
-    })
+  const params = new URLSearchParams({
+    action:       "save",
+    name:         playerName,
+    email:        playerEmail,
+    score:        solvedCount,
+    total:        ANAGRAMS.length,
+    time_seconds: elapsed
+  });
+  fetch(SHEET_URL + "?" + params.toString())
+  .then(r => r.json())
+  .then(j => {
+    if (j.success) { saveEl.textContent = "✓ Score saved!"; saveEl.className = "win-save-msg ok"; }
+    else { saveEl.textContent = "⚠ " + (j.reason || "Save failed."); saveEl.className = "win-save-msg err"; }
   })
-  .then(() => { saveEl.textContent = "✓ Score saved!"; saveEl.className = "win-save-msg ok"; })
   .catch(() => { saveEl.textContent = "⚠ Couldn't save — check your connection."; saveEl.className = "win-save-msg err"; });
 }
 
