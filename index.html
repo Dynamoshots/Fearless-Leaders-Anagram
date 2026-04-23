@@ -595,7 +595,7 @@ function showWin(dnaWord) {
     score:        solvedCount,
     total:        ANAGRAMS.length,
     time_seconds: elapsedSecs,
-    dna_word:     dnaWord
+    word:         dnaWord
   });
   fetch(SHEET_URL + "?" + params.toString())
     .then(r => r.json())
