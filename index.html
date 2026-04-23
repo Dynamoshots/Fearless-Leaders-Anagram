@@ -25,68 +25,41 @@ body {
   min-height: 100vh;
 }
 
-/* ── Checker pattern ── */
 .checker {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='8' height='8' fill='%23fff' opacity='.22'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%23fff' opacity='.22'/%3E%3C/svg%3E");
   background-size: 16px 16px;
 }
 
-/* ── Top / bottom bars ── */
 .bar-top    { height: 6px; background-color: var(--orange); }
 .bar-bottom { height: 5px; background-color: var(--purple); position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; }
 
-/* ── Speed-ray bg ── */
 .speedray {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background: repeating-conic-gradient(from 0deg at 50% 110%, #FF4D13 0deg 2.5deg, transparent 2.5deg 11deg);
   opacity: 0.05;
 }
 
-/* ════════════════════════════════════
-   EMAIL GATE
-════════════════════════════════════ */
-#emailGate {
+/* ── Gate / overlays shared ── */
+#emailGate, #alreadyPlayed, #wordOverlay, #winOverlay {
   position: fixed; inset: 0; background: var(--dark);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 2rem 1.5rem; z-index: 10;
-}
-
-/* ── Already Played ── */
-#alreadyPlayed {
-  display: none; position: fixed; inset: 0; background: var(--dark);
-  flex-direction: column; align-items: center; justify-content: center;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
   padding: 2rem 1.5rem; z-index: 10; text-align: center;
 }
+#emailGate { display: flex; }
 
-/* ── Shared gate styles ── */
 .gate-logo {
   font-weight: 900; font-size: clamp(52px, 14vw, 72px);
   line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase;
   margin-bottom: 8px; position: relative; display: inline-block;
 }
 .gate-logo-wrap { text-align: center; margin-bottom: 28px; }
-.logo-bg {
-  position: absolute; top: 8px; left: -6px;
-  background: var(--purple); width: calc(100% + 12px); height: 100%;
-  transform: skewX(-4deg); z-index: 0;
-}
+.logo-bg { position: absolute; top: 8px; left: -6px; background: var(--purple); width: calc(100% + 12px); height: 100%; transform: skewX(-4deg); z-index: 0; }
 .gate-logo span.inner { position: relative; z-index: 1; padding: 0 8px; }
 .gate-logo .drive { color: var(--orange); }
-.gate-tagline {
-  font-family: 'Barlow', sans-serif; font-style: italic; font-weight: 600;
-  font-size: 15px; color: var(--lime); margin-bottom: 4px;
-}
-.gate-sub {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
-.gate-pip-row {
-  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
-}
-.gate-pip {
-  width: 24px; height: 8px; border-radius: 2px;
-  background-color: var(--orange);
-}
+.gate-tagline { font-family: 'Barlow', sans-serif; font-style: italic; font-weight: 600; font-size: 15px; color: var(--lime); margin-bottom: 4px; }
+.gate-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+.gate-pip-row { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.gate-pip { width: 24px; height: 8px; border-radius: 2px; background-color: var(--orange); }
 
 .gate-card {
   background: var(--card); border: 2.5px solid var(--orange);
@@ -94,20 +67,11 @@ body {
   box-shadow: 8px 8px 0 var(--orange);
   width: 100%; max-width: 400px;
 }
-.gate-card-head {
-  background: var(--orange); padding: 9px 18px;
-}
-.gate-card-head span {
-  font-weight: 900; font-size: 13px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: #fff;
-}
+.gate-card-head { background: var(--orange); padding: 9px 18px; }
+.gate-card-head span { font-weight: 900; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; }
 .gate-card-body { padding: 26px 22px 30px; display: flex; flex-direction: column; gap: 14px; }
 
-label {
-  display: block; font-weight: 700; font-size: 11px;
-  letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase;
-  margin-bottom: 7px;
-}
+label { display: block; font-weight: 700; font-size: 11px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 7px; }
 input[type="text"], input[type="email"] {
   width: 100%; background: rgba(255,255,255,0.05);
   border: 2px solid rgba(255,255,255,0.15); border-radius: 6px;
@@ -131,31 +95,20 @@ input::placeholder { color: var(--muted); }
 .btn-primary:hover:not(:disabled) { opacity: 0.9; }
 .btn-primary:disabled { background: #333; box-shadow: none; cursor: not-allowed; }
 
-.gate-note {
-  text-align: center; font-size: 11px; color: rgba(255,255,255,0.18);
-  letter-spacing: 0.1em; margin-top: 14px;
-}
+.gate-note { text-align: center; font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.1em; margin-top: 14px; }
 
-/* Already played card */
+/* ── Already played ── */
 .ap-card {
   background: var(--card); border: 2.5px solid var(--purple);
   border-radius: 12px; overflow: hidden;
   box-shadow: 8px 8px 0 var(--purple);
-  width: 100%; max-width: 400px; text-align: center;
+  width: 100%; max-width: 400px;
 }
-.ap-card-head {
-  background: var(--purple); padding: 9px 18px;
-}
-.ap-card-head span {
-  font-weight: 900; font-size: 13px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: #fff;
-}
+.ap-card-head { background: var(--purple); padding: 9px 18px; }
+.ap-card-head span { font-weight: 900; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; }
 .ap-card-body { padding: 30px 24px 34px; }
 .ap-icon { font-size: 40px; margin-bottom: 12px; }
-.ap-title {
-  font-weight: 900; font-size: 26px; line-height: 1.1;
-  color: #fff; margin-bottom: 10px;
-}
+.ap-title { font-weight: 900; font-size: 26px; line-height: 1.1; color: #fff; margin-bottom: 10px; }
 .ap-title em { color: var(--lime); font-style: normal; }
 .ap-email { font-size: 14px; color: var(--orange); font-weight: 700; margin-bottom: 12px; letter-spacing: 0.04em; }
 .ap-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-family: 'Barlow', sans-serif; font-style: italic; font-weight: 600; margin-bottom: 24px; }
@@ -169,103 +122,25 @@ input::placeholder { color: var(--muted); }
 }
 .btn-ghost:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
 
-/* ════════════════════════════════════
-   GAME
-════════════════════════════════════ */
-#gameWrap {
-  display: none; flex-direction: column; align-items: center;
-  padding: 36px 20px 80px; position: relative; z-index: 1;
+/* ── Word overlay ── */
+.word-card {
+  background: var(--card); border: 2.5px solid var(--lime);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 8px 8px 0 var(--lime);
+  width: 100%; max-width: 420px;
+  animation: zoomIn 0.4s ease;
 }
-
-/* Header */
-.game-header { text-align: center; margin-bottom: 28px; width: 100%; max-width: 640px; }
-.game-logo { font-weight: 900; font-size: clamp(42px, 10vw, 72px); line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; display: inline-block; position: relative; margin-bottom: 8px; }
-.game-logo .logo-bg-inner { position: absolute; top: 8px; left: -6px; background: var(--purple); width: calc(100% + 12px); height: 100%; transform: skewX(-4deg); z-index: 0; }
-.game-logo span { position: relative; z-index: 1; padding: 0 8px; }
-.game-logo .drive { color: var(--orange); }
-.game-tagline { font-family: 'Barlow', sans-serif; font-style: italic; font-weight: 600; font-size: 16px; color: var(--lime); margin-bottom: 6px; }
-.player-badge { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
-.player-badge span { color: var(--lime); }
-
-/* Progress */
-.progress-row {
-  display: flex; gap: 8px; align-items: center; justify-content: center;
-  margin-bottom: 28px;
+.word-card-head { background: var(--lime); padding: 9px 18px; }
+.word-card-head span { font-weight: 900; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #1a1a1a; }
+.word-card-body { padding: 28px 24px 32px; display: flex; flex-direction: column; gap: 16px; }
+.word-question {
+  font-weight: 900; font-size: clamp(18px, 4vw, 22px); color: #fff;
+  line-height: 1.3; letter-spacing: 0.02em;
 }
-.progress-pip {
-  height: 5px; width: 20px; border-radius: 3px;
-  background: rgba(255,255,255,0.13); transition: all 0.4s ease;
-}
-.progress-pip.done { background: var(--lime); width: 32px; }
-.progress-label { font-size: 13px; font-weight: 800; color: var(--lime); letter-spacing: 0.1em; margin-left: 4px; }
-
-/* Puzzle cards */
-.puzzle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
-  gap: 18px; width: 100%; max-width: 900px;
-}
-
-.puzzle-card {
-  background: var(--card); border-radius: 10px; overflow: hidden;
-  transition: box-shadow 0.3s, border-color 0.3s;
-}
-
-.card-head {
-  padding: 7px 14px; display: flex; align-items: center;
-  justify-content: space-between; background-size: 16px 16px;
-}
-.card-head-label { font-weight: 900; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; }
-.card-head-count { font-weight: 700; font-size: 11px; letter-spacing: 0.1em; }
-
-.card-body { padding: 14px 12px 16px; }
-
-/* Answer slots */
-.slots {
-  display: flex; gap: 5px; justify-content: center;
-  flex-wrap: wrap; min-height: 54px; margin-bottom: 10px;
-}
-.slot-empty {
-  width: 42px; height: 48px;
-  border: 2px dashed rgba(255,255,255,0.12); border-radius: 4px;
-  background: rgba(255,255,255,0.03); flex-shrink: 0;
-}
-
-/* Divider */
-.card-divider {
-  height: 1px; margin: 0 0 10px; opacity: 0.45;
-}
-
-/* Source tiles bank */
-.tile-bank {
-  display: flex; gap: 5px; justify-content: center;
-  flex-wrap: wrap; min-height: 54px;
-  background: rgba(255,255,255,0.04); border-radius: 6px;
-  padding: 7px; border: 1px solid rgba(255,255,255,0.07);
-}
-
-/* Letter tile button */
-.tile {
-  width: 42px; height: 48px; border-radius: 4px;
-  font-family: 'Barlow Condensed', 'Impact', sans-serif;
-  font-weight: 800; font-size: 20px; letter-spacing: 0.05em;
-  cursor: pointer; user-select: none; text-transform: uppercase;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; border: none; transition: transform 0.08s;
-}
-.tile:active { transform: translateY(2px); }
-.tile.idle    { background: var(--dark); border: 2.5px solid var(--orange); color: #fff; box-shadow: 3px 3px 0 var(--orange); }
-.tile.placed  { background: var(--orange); border: 2px solid #fff; color: #fff; box-shadow: 3px 3px 0 rgba(255,255,255,0.2); animation: tileIn 0.15s ease; }
-.tile.correct { background: var(--lime); border: 2.5px solid #8aaa00; color: var(--dark); box-shadow: 3px 3px 0 #8aaa00; }
-.tile.wrong   { background: var(--purple); border: 2px solid #fff; color: #fff; box-shadow: 3px 3px 0 rgba(255,255,255,0.2); }
+.word-question em { color: var(--lime); font-style: normal; }
+.word-error { font-size: 13px; font-weight: 700; color: var(--orange); min-height: 18px; }
 
 /* ── Win overlay ── */
-#winOverlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(26,26,26,0.93); z-index: 40;
-  align-items: center; justify-content: center; padding: 24px;
-}
-#winOverlay.show { display: flex; }
 .win-card {
   background: var(--card); border: 3px solid var(--orange); border-radius: 12px;
   padding: 44px 50px; text-align: center;
@@ -280,42 +155,70 @@ input::placeholder { color: var(--muted); }
 .win-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 14px; }
 .win-stat-val { font-weight: 900; font-size: 34px; line-height: 1; }
 .win-stat-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+.win-word-row { font-size: 14px; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 6px; }
+.win-word-row span { color: var(--lime); font-size: 18px; }
 .win-save-msg { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; min-height: 18px; }
-.win-save-msg.ok   { color: var(--lime); }
-.win-save-msg.err  { color: var(--orange); }
+.win-save-msg.ok  { color: var(--lime); }
+.win-save-msg.err { color: var(--orange); }
 
-/* ── Animations ── */
-@keyframes tileIn {
-  0%   { transform: scale(0.6) rotate(-5deg); opacity: 0; }
-  70%  { transform: scale(1.1) rotate(1deg); }
-  100% { transform: scale(1); opacity: 1; }
+/* ── Game ── */
+#gameWrap {
+  display: none; flex-direction: column; align-items: center;
+  padding: 36px 20px 80px; position: relative; z-index: 1;
 }
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20% { transform: translateX(-7px); }
-  40% { transform: translateX(7px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+.game-header { text-align: center; margin-bottom: 28px; width: 100%; max-width: 640px; }
+.game-logo { font-weight: 900; font-size: clamp(42px, 10vw, 72px); line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; display: inline-block; position: relative; margin-bottom: 8px; }
+.game-logo .logo-bg-inner { position: absolute; top: 8px; left: -6px; background: var(--purple); width: calc(100% + 12px); height: 100%; transform: skewX(-4deg); z-index: 0; }
+.game-logo span { position: relative; z-index: 1; padding: 0 8px; }
+.game-logo .drive { color: var(--orange); }
+.game-tagline { font-family: 'Barlow', sans-serif; font-style: italic; font-weight: 600; font-size: 16px; color: var(--lime); margin-bottom: 6px; }
+.player-badge { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
+.player-badge span { color: var(--lime); }
+
+.progress-row { display: flex; gap: 8px; align-items: center; justify-content: center; margin-bottom: 28px; }
+.progress-pip { height: 5px; width: 20px; border-radius: 3px; background: rgba(255,255,255,0.13); transition: all 0.4s ease; }
+.progress-pip.done { background: var(--lime); width: 32px; }
+.progress-label { font-size: 13px; font-weight: 800; color: var(--lime); letter-spacing: 0.1em; margin-left: 4px; }
+
+.puzzle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px; width: 100%; max-width: 900px; }
+.puzzle-card { background: var(--card); border-radius: 10px; overflow: hidden; transition: box-shadow 0.3s, border-color 0.3s; }
+.card-head { padding: 7px 14px; display: flex; align-items: center; justify-content: space-between; background-size: 16px 16px; }
+.card-head-label { font-weight: 900; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; }
+.card-head-count { font-weight: 700; font-size: 11px; letter-spacing: 0.1em; }
+.card-body { padding: 14px 12px 16px; }
+
+.slots { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; min-height: 54px; margin-bottom: 10px; }
+.slot-empty { width: 42px; height: 48px; border: 2px dashed rgba(255,255,255,0.12); border-radius: 4px; background: rgba(255,255,255,0.03); flex-shrink: 0; }
+.card-divider { height: 1px; margin: 0 0 10px; opacity: 0.45; }
+.tile-bank { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; min-height: 54px; background: rgba(255,255,255,0.04); border-radius: 6px; padding: 7px; border: 1px solid rgba(255,255,255,0.07); }
+
+.tile {
+  width: 42px; height: 48px; border-radius: 4px;
+  font-family: 'Barlow Condensed', 'Impact', sans-serif;
+  font-weight: 800; font-size: 20px; letter-spacing: 0.05em;
+  cursor: pointer; user-select: none; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; border: none; transition: transform 0.08s;
 }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes zoomIn {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
-}
+.tile:active { transform: translateY(2px); }
+.tile.idle    { background: var(--dark); border: 2.5px solid var(--orange); color: #fff; box-shadow: 3px 3px 0 var(--orange); }
+.tile.placed  { background: var(--orange); border: 2px solid #fff; color: #fff; box-shadow: 3px 3px 0 rgba(255,255,255,0.2); animation: tileIn 0.15s ease; }
+.tile.correct { background: var(--lime); border: 2.5px solid #8aaa00; color: var(--dark); box-shadow: 3px 3px 0 #8aaa00; }
+.tile.wrong   { background: var(--purple); border: 2px solid #fff; color: #fff; box-shadow: 3px 3px 0 rgba(255,255,255,0.2); }
+
+@keyframes tileIn { 0%{transform:scale(0.6) rotate(-5deg);opacity:0} 70%{transform:scale(1.1) rotate(1deg)} 100%{transform:scale(1);opacity:1} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes zoomIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
 .fadeUp { animation: fadeUp 0.5s ease both; }
 </style>
 </head>
 <body>
 
-<!-- ══ PASTE YOUR GOOGLE APPS SCRIPT URL HERE ══════════════════════════ -->
 <script>
   const SHEET_URL = "https://script.google.com/macros/s/AKfycbwZD4zLo0FS2oM1Dj3mEtCFH0E8gBercnHnWvlwUEZGeERG78JgPAzzIGR2tQwn2isyOw/exec";
   const LS_KEY    = "overdrive_played_v1";
 </script>
-<!-- ════════════════════════════════════════════════════════════════════ -->
 
 <div class="speedray"></div>
 <div class="bar-top checker"></div>
@@ -335,17 +238,12 @@ input::placeholder { color: var(--muted); }
     <div class="gate-tagline">Go fast, stay in charge.</div>
     <div class="gate-sub">Anagram Challenge</div>
   </div>
-
   <div class="gate-card fadeUp">
     <div class="gate-card-head checker"><span>Enter to Play</span></div>
     <div class="gate-card-body">
       <div>
-        <label for="nameInput">Your Name</label>
-        <input type="text" id="nameInput" placeholder="e.g. Alex Sharma" autocomplete="name" />
-      </div>
-      <div>
         <label for="emailInput">Email Address</label>
-        <input type="email" id="emailInput" placeholder="e.g. alex@pinelabs.com" autocomplete="email" />
+        <input type="email" id="emailInput" placeholder="e.g. alex@pinelabs.com" autocomplete="email" onkeydown="if(event.key==='Enter')handleStart()" />
       </div>
       <div class="gate-error" id="gateError"></div>
       <button class="btn-primary" id="startBtn" onclick="handleStart()">Start the Challenge 🏁</button>
@@ -374,22 +272,32 @@ input::placeholder { color: var(--muted); }
   </div>
 </div>
 
-<!-- ════════ GAME ════════ -->
-<div id="gameWrap">
-  <div class="game-header fadeUp">
-    <div class="game-logo">
-      <div class="logo-bg-inner"></div>
-      <span>OVER<span class="drive">DRIVE</span></span>
+<!-- ════════ WORD OVERLAY (shown after game, before score) ════════ -->
+<div id="wordOverlay">
+  <div class="gate-logo-wrap fadeUp">
+    <div class="gate-logo">
+      <div class="logo-bg"></div>
+      <span class="inner">OVER<span class="drive">DRIVE</span></span>
     </div>
-    <div class="game-tagline">Go fast, stay in charge.</div>
-    <div class="player-badge" id="playerBadge"></div>
   </div>
-
-  <div class="progress-row" id="progressRow"></div>
-  <div class="puzzle-grid" id="puzzleGrid"></div>
+  <div class="word-card fadeUp">
+    <div class="word-card-head checker"><span>🧬 Pine Labs DNA</span></div>
+    <div class="word-card-body">
+      <div class="word-question">
+        You know the <em>Pine Labs DNA</em> very well.<br/>
+        What is the <em>one word</em> that comes to your mind when you think of Pine Labs?
+      </div>
+      <div>
+        <label for="wordInput">Your one word</label>
+        <input type="text" id="wordInput" placeholder="e.g. Innovation" maxlength="40" onkeydown="if(event.key==='Enter')submitWord()" />
+      </div>
+      <div class="word-error" id="wordError"></div>
+      <button class="btn-primary" onclick="submitWord()">Submit &amp; See My Score →</button>
+    </div>
+  </div>
 </div>
 
-<!-- ════════ WIN OVERLAY ════════ -->
+<!-- ════════ WIN SCREEN ════════ -->
 <div id="winOverlay">
   <div class="win-card">
     <div class="win-card-bar checker"></div>
@@ -405,16 +313,28 @@ input::placeholder { color: var(--muted); }
         <div class="win-stat-lbl">Time</div>
       </div>
     </div>
+    <div class="win-word-row">Your word: <span id="winWord">—</span></div>
     <div class="win-save-msg" id="winSaveMsg">Saving score…</div>
   </div>
 </div>
 
+<!-- ════════ GAME ════════ -->
+<div id="gameWrap">
+  <div class="game-header fadeUp">
+    <div class="game-logo">
+      <div class="logo-bg-inner"></div>
+      <span>OVER<span class="drive">DRIVE</span></span>
+    </div>
+    <div class="game-tagline">Go fast, stay in charge.</div>
+    <div class="player-badge" id="playerBadge"></div>
+  </div>
+  <div class="progress-row" id="progressRow"></div>
+  <div class="puzzle-grid" id="puzzleGrid"></div>
+</div>
+
 <div class="bar-bottom checker"></div>
 
-<!-- ══════════════════════ GAME LOGIC ══════════════════════ -->
 <script>
-
-// ── Puzzle data ──────────────────────────────────────────────────────────────
 const ANAGRAMS = [
   { jumbled: "HASPRE",    answer: "SHERPA"    },
   { jumbled: "TSAIRT",    answer: "ARTIST"    },
@@ -424,59 +344,41 @@ const ANAGRAMS = [
   { jumbled: "WORROMOT",  answer: "TOMORROW"  },
   { jumbled: "OCE",       answer: "CEO"       },
 ];
-
 const ACCENTS = ["#FF4D13","#4B00FF","#FF4D13","#d0f255","#4B00FF","#FF4D13","#d0f255"];
 
-// ── State ────────────────────────────────────────────────────────────────────
-let playerName  = "";
 let playerEmail = "";
 let startTime   = null;
 let solvedCount = 0;
+let elapsedSecs = 0;
 
-// Per-card state: placed[] = letter indices in order, remaining[] = available indices
 const cardState = ANAGRAMS.map(p => ({
   placed: [], remaining: p.jumbled.split("").map((_,i)=>i), status: "idle"
 }));
 
-// ── Gate flow ────────────────────────────────────────────────────────────────
+// ── Gate ─────────────────────────────────────────────────────────────────────
 async function handleStart() {
-  const nameEl  = document.getElementById("nameInput");
   const emailEl = document.getElementById("emailInput");
   const errEl   = document.getElementById("gateError");
   const btn     = document.getElementById("startBtn");
+  const email   = emailEl.value.trim().toLowerCase();
 
-  const name  = nameEl.value.trim();
-  const email = emailEl.value.trim().toLowerCase();
-
-  if (!name)  { errEl.textContent = "⚠ Please enter your name."; return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = "⚠ Please enter a valid email."; return; }
   errEl.textContent = "";
 
-  // 1. localStorage fast-check
   if (localStorage.getItem(LS_KEY) === email) { showAlreadyPlayed(email); return; }
 
-  btn.disabled    = true;
-  btn.textContent = "Checking…";
+  btn.disabled = true; btn.textContent = "Checking…";
 
-  // 2. Server check
   try {
     const res  = await fetch(SHEET_URL + "?email=" + encodeURIComponent(email));
     const json = await res.json();
-    if (json.exists) {
-      localStorage.setItem(LS_KEY, email);
-      showAlreadyPlayed(email);
-      return;
-    }
-  } catch (_) { /* network error — allow through */ }
+    if (json.exists) { localStorage.setItem(LS_KEY, email); showAlreadyPlayed(email); return; }
+  } catch (_) {}
 
-  playerName  = name;
   playerEmail = email;
-
   document.getElementById("emailGate").style.display = "none";
   document.getElementById("gameWrap").style.display  = "flex";
-  document.getElementById("playerBadge").innerHTML   =
-    "Welcome, <span>" + playerName + "</span>";
-
+  document.getElementById("playerBadge").innerHTML   = "Playing as <span>" + playerEmail + "</span>";
   startTime = Date.now();
   buildGame();
 }
@@ -485,74 +387,76 @@ function showAlreadyPlayed(email) {
   document.getElementById("emailGate").style.display      = "none";
   document.getElementById("alreadyPlayed").style.display  = "flex";
   document.getElementById("apEmail").textContent          = email;
-  document.getElementById("startBtn").disabled    = false;
-  document.getElementById("startBtn").textContent = "Start the Challenge 🏁";
+  const btn = document.getElementById("startBtn");
+  btn.disabled = false; btn.textContent = "Start the Challenge 🏁";
 }
 
 function resetGate() {
   document.getElementById("alreadyPlayed").style.display = "none";
   document.getElementById("emailGate").style.display     = "flex";
   document.getElementById("emailInput").value = "";
-  document.getElementById("nameInput").value  = "";
 }
 
-// ── Build game UI ────────────────────────────────────────────────────────────
+// ── Word submission ───────────────────────────────────────────────────────────
+function submitWord() {
+  const wordEl  = document.getElementById("wordInput");
+  const errEl   = document.getElementById("wordError");
+  const word    = wordEl.value.trim();
+
+  if (!word) { errEl.textContent = "⚠ Please enter a word."; return; }
+  if (word.includes(" ")) { errEl.textContent = "⚠ One word only — no spaces!"; return; }
+  errEl.textContent = "";
+
+  // Hide word overlay, show win screen
+  document.getElementById("wordOverlay").style.display = "none";
+  showWin(word);
+}
+
+// ── Build game ────────────────────────────────────────────────────────────────
 function buildGame() {
   buildProgress();
   const grid = document.getElementById("puzzleGrid");
   grid.innerHTML = "";
 
   ANAGRAMS.forEach((puzzle, i) => {
-    const accent = ACCENTS[i];
-    const light  = accent === "#d0f255";
+    const accent  = ACCENTS[i];
+    const light   = accent === "#d0f255";
     const letters = puzzle.jumbled.split("");
 
     const card = document.createElement("div");
-    card.className = "puzzle-card";
+    card.className = "puzzle-card fadeUp";
     card.id = "card-" + i;
-    card.style.border     = "2.5px solid " + accent;
-    card.style.boxShadow  = "6px 6px 0 " + accent;
+    card.style.border        = "2.5px solid " + accent;
+    card.style.boxShadow     = "6px 6px 0 " + accent;
     card.style.animationDelay = (i * 0.07) + "s";
-    card.classList.add("fadeUp");
 
-    // head
     const head = document.createElement("div");
     head.className = "card-head checker";
     head.style.background = accent;
     head.innerHTML =
       `<span class="card-head-label" style="color:${light?"#1a1a1a":"#fff"}">PUZZLE ${i+1}</span>` +
       `<span class="card-head-count" style="color:${light?"rgba(0,0,0,0.6)":"rgba(255,255,255,0.7)"}">` +
-        letters.length + ` LETTERS</span>`;
+      letters.length + ` LETTERS</span>`;
     card.appendChild(head);
 
-    // body
     const body = document.createElement("div");
     body.className = "card-body";
 
-    // slots
     const slots = document.createElement("div");
-    slots.className = "slots";
-    slots.id = "slots-" + i;
+    slots.className = "slots"; slots.id = "slots-" + i;
     for (let s = 0; s < letters.length; s++) {
-      const el = document.createElement("div");
-      el.className = "slot-empty";
-      slots.appendChild(el);
+      const el = document.createElement("div"); el.className = "slot-empty"; slots.appendChild(el);
     }
     body.appendChild(slots);
 
-    // divider
-    const div = document.createElement("div");
-    div.className = "card-divider";
-    div.style.background = `linear-gradient(to right, transparent, ${accent}, transparent)`;
-    body.appendChild(div);
+    const divider = document.createElement("div");
+    divider.className = "card-divider";
+    divider.style.background = `linear-gradient(to right, transparent, ${accent}, transparent)`;
+    body.appendChild(divider);
 
-    // tile bank
     const bank = document.createElement("div");
-    bank.className = "tile-bank";
-    bank.id = "bank-" + i;
-    letters.forEach((_, idx) => {
-      bank.appendChild(makeTile(letters[idx], () => pickTile(i, idx)));
-    });
+    bank.className = "tile-bank"; bank.id = "bank-" + i;
+    letters.forEach((_, idx) => bank.appendChild(makeTile(letters[idx], () => pickTile(i, idx))));
     body.appendChild(bank);
     card.appendChild(body);
     grid.appendChild(card);
@@ -561,17 +465,15 @@ function buildGame() {
 
 function makeTile(letter, onClick) {
   const t = document.createElement("button");
-  t.className = "tile idle";
-  t.textContent = letter;
+  t.className = "tile idle"; t.textContent = letter;
   if (onClick) t.onclick = onClick;
   return t;
 }
 
-// ── Tile interaction ─────────────────────────────────────────────────────────
+// ── Tile logic ────────────────────────────────────────────────────────────────
 function pickTile(cardIdx, letterIdx) {
   const state = cardState[cardIdx];
   if (state.status === "correct") return;
-
   state.placed.push(letterIdx);
   state.remaining = state.remaining.filter(i => i !== letterIdx);
   state.status = "idle";
@@ -582,7 +484,6 @@ function pickTile(cardIdx, letterIdx) {
 function removeTile(cardIdx, pos) {
   const state = cardState[cardIdx];
   if (state.status === "correct") return;
-
   state.remaining.push(state.placed[pos]);
   state.placed.splice(pos, 1);
   state.status = "idle";
@@ -596,30 +497,22 @@ function renderCard(cardIdx) {
   const accent  = ACCENTS[cardIdx];
   const light   = accent === "#d0f255";
 
-  // Slots
   const slots = document.getElementById("slots-" + cardIdx);
   slots.innerHTML = "";
   for (let pos = 0; pos < letters.length; pos++) {
     if (pos < state.placed.length) {
-      const lIdx = state.placed[pos];
-      const t = makeTile(letters[lIdx], () => removeTile(cardIdx, pos));
+      const t = makeTile(letters[state.placed[pos]], () => removeTile(cardIdx, pos));
       t.className = "tile " + (state.status === "correct" ? "correct" : state.status === "wrong" ? "wrong" : "placed");
       slots.appendChild(t);
     } else {
-      const el = document.createElement("div");
-      el.className = "slot-empty";
-      slots.appendChild(el);
+      const el = document.createElement("div"); el.className = "slot-empty"; slots.appendChild(el);
     }
   }
 
-  // Bank
   const bank = document.getElementById("bank-" + cardIdx);
   bank.innerHTML = "";
-  state.remaining.forEach(idx => {
-    bank.appendChild(makeTile(letters[idx], () => pickTile(cardIdx, idx)));
-  });
+  state.remaining.forEach(idx => bank.appendChild(makeTile(letters[idx], () => pickTile(cardIdx, idx))));
 
-  // If wrong — shake + reset after delay
   if (state.status === "wrong") {
     const card = document.getElementById("card-" + cardIdx);
     card.style.animation = "shake 0.5s ease";
@@ -632,7 +525,6 @@ function renderCard(cardIdx) {
     }, 600);
   }
 
-  // If correct — update card header
   if (state.status === "correct") {
     const head = document.getElementById("card-" + cardIdx).querySelector(".card-head-label");
     if (head) { head.textContent = "✓ SOLVED"; head.style.color = light ? "#1a1a1a" : "#fff"; }
@@ -646,23 +538,23 @@ function checkAnswer(cardIdx) {
   const puzzle  = ANAGRAMS[cardIdx];
   const state   = cardState[cardIdx];
   const letters = puzzle.jumbled.split("");
-
   if (state.placed.length < letters.length) return;
-
   const word = state.placed.map(i => letters[i]).join("");
   if (word === puzzle.answer) {
     state.status = "correct";
     solvedCount++;
     renderCard(cardIdx);
     buildProgress();
-    if (solvedCount === ANAGRAMS.length) setTimeout(showWin, 700);
+    if (solvedCount === ANAGRAMS.length) {
+      elapsedSecs = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
+      setTimeout(showWordOverlay, 700);
+    }
   } else {
     state.status = "wrong";
     renderCard(cardIdx);
   }
 }
 
-// ── Progress ─────────────────────────────────────────────────────────────────
 function buildProgress() {
   const row = document.getElementById("progressRow");
   row.innerHTML = "";
@@ -677,37 +569,42 @@ function buildProgress() {
   row.appendChild(lbl);
 }
 
-// ── Win ───────────────────────────────────────────────────────────────────────
-function showWin() {
-  const elapsed = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
-  const timeStr = elapsed < 60 ? elapsed + "s" : Math.floor(elapsed/60) + "m " + (elapsed%60) + "s";
+// ── After game: show word prompt ──────────────────────────────────────────────
+function showWordOverlay() {
+  document.getElementById("wordOverlay").style.display = "flex";
+  document.getElementById("wordInput").focus();
+}
+
+// ── Show final score & save ───────────────────────────────────────────────────
+function showWin(dnaWord) {
+  const timeStr = elapsedSecs < 60
+    ? elapsedSecs + "s"
+    : Math.floor(elapsedSecs/60) + "m " + (elapsedSecs%60) + "s";
 
   document.getElementById("winScore").textContent = solvedCount + "/" + ANAGRAMS.length;
   document.getElementById("winTime").textContent  = timeStr;
-  document.getElementById("winOverlay").classList.add("show");
+  document.getElementById("winWord").textContent  = dnaWord;
+  document.getElementById("winOverlay").style.display = "flex";
 
-  // Lock in localStorage immediately
   localStorage.setItem(LS_KEY, playerEmail);
 
-  // Save to sheet via GET (Apps Script handles GET reliably without CORS issues)
   const saveEl = document.getElementById("winSaveMsg");
   const params = new URLSearchParams({
     action:       "save",
-    name:         playerName,
     email:        playerEmail,
     score:        solvedCount,
     total:        ANAGRAMS.length,
-    time_seconds: elapsed
+    time_seconds: elapsedSecs,
+    dna_word:     dnaWord
   });
   fetch(SHEET_URL + "?" + params.toString())
-  .then(r => r.json())
-  .then(j => {
-    if (j.success) { saveEl.textContent = "✓ Score saved!"; saveEl.className = "win-save-msg ok"; }
-    else { saveEl.textContent = "⚠ " + (j.reason || "Save failed."); saveEl.className = "win-save-msg err"; }
-  })
-  .catch(() => { saveEl.textContent = "⚠ Couldn't save — check your connection."; saveEl.className = "win-save-msg err"; });
+    .then(r => r.json())
+    .then(j => {
+      if (j.success) { saveEl.textContent = "✓ Score saved!"; saveEl.className = "win-save-msg ok"; }
+      else { saveEl.textContent = "⚠ " + (j.reason || "Save failed."); saveEl.className = "win-save-msg err"; }
+    })
+    .catch(() => { saveEl.textContent = "⚠ Couldn't save — check connection."; saveEl.className = "win-save-msg err"; });
 }
-
 </script>
 </body>
 </html>
